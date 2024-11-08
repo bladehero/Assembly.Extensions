@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>LibraryTemplate</PackageId>
+        <Version>8.0.0</Version>
+        <Authors>bladehero</Authors>
+        <PackageDescription>LibraryTemplate</PackageDescription>
+        <RepositoryUrl>https://github.com/bladehero/LibraryTemplate</RepositoryUrl>
+        <LangVersion>latest</LangVersion>
+    </PropertyGroup>
+</Project>
