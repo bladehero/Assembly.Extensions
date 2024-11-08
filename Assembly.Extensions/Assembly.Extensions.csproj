@@ -3,11 +3,11 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <PackageId>LibraryTemplate</PackageId>
+        <PackageId>Assembly.Extensions</PackageId>
         <Version>8.0.0</Version>
         <Authors>bladehero</Authors>
-        <PackageDescription>LibraryTemplate</PackageDescription>
-        <RepositoryUrl>https://github.com/bladehero/LibraryTemplate</RepositoryUrl>
+        <PackageDescription>Assembly.Extensions</PackageDescription>
+        <RepositoryUrl>https://github.com/bladehero/Assembly.Extensions</RepositoryUrl>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 </Project>
