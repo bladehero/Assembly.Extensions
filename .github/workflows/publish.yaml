@@ -2,8 +2,8 @@ name: Publish to NuGet
 
 on:
   push:
-    branches: ["master"]
-    tags: ["v*.*.*"]
+    branches: [ "master" ]
+    tags: [ "v*.*.*" ]
 
 jobs:
   publish:
@@ -27,5 +27,5 @@ jobs:
       - name: Pack the project
         run: dotnet pack --configuration Release --no-build -o ./out
 
-       - name: Publish to NuGet
-         run: dotnet nuget push ./out/*.nupkg --api-key ${{ secrets.GH_PAT }} --source "https://nuget.pkg.github.com/bladehero/index.json"
+      - name: Publish to NuGet
+        run: dotnet nuget push ./out/*.nupkg --api-key ${{ secrets.GH_PAT }} --source "https://nuget.pkg.github.com/bladehero/index.json"
