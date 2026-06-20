@@ -2,16 +2,22 @@ name: Publish to NuGet
 
 on:
   push:
-    branches: [ "master" ]
-    tags: [ "v*.*.*" ]
+    branches: ["master"]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
 
+    # Published version comes from the `VERSION` repository variable
+    # (Settings -> Secrets and variables -> Actions -> Variables). After a
+    # successful publish, the patch is incremented and written back to the
+    # variable. Edit the variable to set or jump the version (e.g. 8.1.0).
+    env:
+      VERSION: ${{ vars.VERSION }}
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
@@ -22,10 +28,22 @@ jobs:
         run: dotnet restore
 
       - name: Build the project
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore -p:Version=$VERSION
 
       - name: Pack the project
-        run: dotnet pack --configuration Release --no-build -o ./out
+        run: dotnet pack --configuration Release --no-build -o ./out -p:Version=$VERSION
 
       - name: Publish to NuGet
-        run: dotnet nuget push ./out/*.nupkg --api-key ${{ secrets.GH_PAT }} --source "https://nuget.pkg.github.com/bladehero/index.json"
+        run: dotnet nuget push ./out/*.nupkg --api-key ${{ secrets.GH_PAT }} --source "https://nuget.pkg.github.com/bladehero/index.json" --skip-duplicate
+
+      # Increment the patch and store it back in the VERSION variable so the
+      # next merge to master publishes the following version. Requires GH_PAT
+      # to have variable-write scope (classic `repo` or fine-grained Variables).
+      - name: Bump patch version for next run
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          IFS='.' read -r major minor patch <<< "$VERSION"
+          next="$major.$minor.$((patch + 1))"
+          echo "Published $VERSION; setting VERSION variable to $next"
+          gh variable set VERSION --body "$next" --repo "$GITHUB_REPOSITORY"
